@@ -1,0 +1,59 @@
+---
+title: "Top Spotify Tracks of 2017"
+author: "James Le"
+output: 
+ html_notebook:
+  toc: true
+  code_folding: hide
+---
+
+# Introduction
+In this notebook, I'll take a look at the audio features of the tracks in **Spotify's Top Songs of 2017** playlist and try to highlight the common patterns behind the audio features of these songs. 
+
+# Data Processing
+First off, let’s import the data and get an idea of what I'm working with.
+
+```{r read, echo=TRUE, message=FALSE, warning=FALSE}
+library(readr)
+library(plyr)
+library(dplyr)
+library(ggplot2)
+library(formattable)
+
+audio_features <- read.csv('Spotify-Audio-Features.csv')
+```
+
+Let's take a look at the summary of this dataset.
+```{r summary, echo=TRUE}
+summary(audio_features)
+```
+
+For the simplicity, I'll convert `duration_ms` variable in seconds rather than miliseconds.
+```{r, echo=TRUE, message = FALSE}
+audio_features$duration_ms <- round(audio_features$duration_ms / 1000)
+colnames(audio_features)[15] <- "duration"
+```
+
+# Data Analysis
+
+## Artists dominating the Top List
+
+Let's determine the artists who have more than one song on the Top 100 Songs List.
+```{r, echo=TRUE, message = FALSE}
+top_artists <- audio_features %>%
+    group_by(artists)  %>%
+    summarise(number_apperance = n()) %>%
+    filter(number_apperance > 1) %>%
+    arrange(desc(number_apperance))
+
+top_artists$artists <- factor(top_artists$artists, levels = top_artists$artists[order(top_artists$number_apperance)]) # visualise the list in descending order 
+
+ggplot(top_artists, aes(x = artists, y = number_apperance)) +
+    geom_bar(stat = "identity",  fill = "tomato2", width = 0.6 ) + 
+    labs(title = "2017 Top Spotify Artists", x = "Artists", y = "Number of Apperances on the Top 100") +
+    theme(plot.title = element_text(size = 15, hjust = -.3, face = "bold"), axis.title = element_text(size = 12)) +
+    geom_text(aes(label=number_apperance), hjust = 2, size = 3, color = 'white') +
+    coord_flip()
+```
+
+So, It seems like **Ed Sheeran** and **The Chainsmokers** rocked the 2017 with 4 different songs on the Top list, while **Drake**  and **Martin Garrix** are following them with 3 different songs.
