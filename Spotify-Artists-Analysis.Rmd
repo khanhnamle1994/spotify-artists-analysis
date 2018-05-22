@@ -1,0 +1,298 @@
+---
+title: "Spotify Artists Analysis"
+author: "James Le"
+date: 'Updated: `r Sys.Date()`'
+output:
+  html_document:
+    df_print: paged
+    toc: yes
+    code_folding: hide
+    fig_caption: yes
+    fig_height: 4.5
+    fig_width: 7
+    number_sections: yes
+---
+
+# Introduction
+
+# Getting Data
+
+The first step is registering my application in the [API Website](https://beta.developer.spotify.com/web-api/) and getting the keys (Client ID and Client Secret) for future requests.
+
+The Spotify Web API has different URI (Uniform Resource Identifier) to access playlists, artists or tracks information. Consequently, the process of getting data must be divided in 2 key steps.
+
+* Get the "This Is" Playlist Series for multiple musicians.
+* Get the audio features for each artist´s Playlist tracks.
+
+## Web API Credentials
+
+First, I created two variables for the *Client ID* and the *Client Secret* credentials.
+
+```{r}
+spotifyKey <- "182878ec396d424283c951d6769e9497"
+spotifySecret <- "2a6d8f846edc4667ba9f0ba43cd7fe4c"
+```
+
+After that, I requested an access token in order to authorise my app to retrieve and manage Spotify data.
+
+```{r}
+library(Rspotify)
+library(httr)
+library(jsonlite)
+
+spotifyEndpoint <- oauth_endpoint(NULL, 
+                                  "https://accounts.spotify.com/authorize",
+                                  "https://accounts.spotify.com/api/token")
+spotifyToken <- spotifyOAuth("Spotify Analysis", spotifyKey, spotifySecret)
+```
+
+## "This Is" Series Playlist
+
+The first step to pull the artists´ ["This Is" series](https://open.spotify.com/search/playlists/this%20is%20) is to get the URI´s for each one. I stored each musician´s This Is Playlist URI in a .csv file and imported it in R.
+
+```{r}
+library(readr)
+playlistURI <- read.csv("this-is-playlist-URI.csv", header = T, sep = ";")
+```
+
+With each Playlist URI, I applied the *getPlaylistSongs* from the *RSpotify* package and stored the Playlist information in an empty dataframe.
+
+```{r}
+# Empty dataframe
+PlaylistSongs <- data.frame(PlaylistID = character(),
+                            Musician = character(),
+                            tracks = character(),
+                            id = character(),
+                            popularity = integer(),
+                            artist = character(),
+                            artistId = character(),
+                            album = character(),
+                            stringsAsFactors=FALSE) 
+# Getting each playlist
+for (i in 1:nrow(playlistURI)) {
+  i <- cbind(PlaylistID = as.factor(playlistURI[i,2]),
+             Musician = as.factor(playlistURI[i,1]),
+             getPlaylistSongs("spotify",
+                              playlistid = as.factor(playlistURI[i,2]),
+                              token=spotifyToken))
+  PlaylistSongs <- rbind(PlaylistSongs, i)
+}
+```
+
+As we can see below, the dataframe has 10 columns and 2112 rows.
+
+```{r}
+dim(PlaylistSongs)
+```
+
+The following table shows the first 86 rows of my dataframe PlaylistSongs. It contains the tracks by Taylor Swift and Ariana Grande.
+
+```{r}
+library(knitr)
+library(kableExtra)
+library(dplyr)
+options(knitr.table.format = "html")
+options(width = 12)
+
+# Only Taylor Swift and Ariana Grande
+kable(head(PlaylistSongs,86)) %>%
+kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"), font_size = 12) %>%
+scroll_box(width = "720px", height = "500px")
+```
+
+## Audio Features
+
+First, I wrote a formula (*getFeatures*) that extracts the audio features for any specific ID stored as a vector.
+
+```{r}
+getFeatures <- function (vector_id, token) 
+{
+  link <- httr::GET(paste0("https://api.spotify.com/v1/audio-features/?ids=", 
+  vector_id), httr::config(token = token))
+  list <- httr::content(link)
+  return(list)
+}
+```
+
+Next, I included *getFeatures* in another formula (*get_features*). The latter formula extracts the audio features for the track ID’s vector and returns them in a dataframe.
+
+```{r}
+get_features <- function (x) 
+{
+  getFeatures2 <- getFeatures(vector_id = x, token = spotifyToken)
+  features_output <- do.call(rbind, lapply(getFeatures2$audio_features, data.frame, stringsAsFactors=FALSE))
+}
+```
+
+Using the formula created above, I will be able to extract the audio features for each track. In order to do so, I need a vector containing each track ID. The rate limit for the Spotify API is 100 tracks, so I decided to create a vector with track IDs for each musician.
+
+```{r}
+TaylorSwift_vc <- paste(as.character(PlaylistSongs$id[1:38]), sep="", collapse=",")
+ArianaGrande_vc <- paste(as.character(PlaylistSongs$id[39:86]), sep="", collapse=",")
+KendrickLamar_vc <- paste(as.character(PlaylistSongs$id[87:124]), sep="", collapse=",")
+ShawnMendes_vc <- paste(as.character(PlaylistSongs$id[125:167]), sep="", collapse=",")
+Maroon5_vc <- paste(as.character(PlaylistSongs$id[168:216]), sep="", collapse=",")
+PostMalone_vc <- paste(as.character(PlaylistSongs$id[217:251]), sep="", collapse=",")
+Kygo_vc <- paste(as.character(PlaylistSongs$id[252:289]), sep="", collapse=",")
+TheChainsmokers_vc <- paste(as.character(PlaylistSongs$id[290:323]), sep="", collapse=",")
+Adele_vc <- paste(as.character(PlaylistSongs$id[324:348]), sep="", collapse=",")
+Drake_vc <- paste(as.character(PlaylistSongs$id[349:398]), sep="", collapse=",")
+JustinBieber_vc <- paste(as.character(PlaylistSongs$id[399:447]), sep="", collapse=",")
+Coldplay_vc <- paste(as.character(PlaylistSongs$id[448:484]), sep="",collapse=",")
+KanyeWest_vc <- paste(as.character(PlaylistSongs$id[485:535]), sep="", collapse=",")
+BrunoMars_vc <- paste(as.character(PlaylistSongs$id[536:574]), sep="", collapse=",")
+EdSheeran_vc <- paste(as.character(PlaylistSongs$id[575:614]), sep="", collapse=",")
+Eminem_vc <- paste(as.character(PlaylistSongs$id[615:669]), sep="", collapse=",")
+Beyonce_vc <- paste(as.character(PlaylistSongs$id[670:701]), sep="", collapse=",")
+Avicii_vc <- paste(as.character(PlaylistSongs$id[702:760]), sep="", collapse=",")
+Marshmello_vc <- paste(as.character(PlaylistSongs$id[761:798]), sep="", collapse=",")
+CalvinHarris_vc <- paste(as.character(PlaylistSongs$id[799:836]), sep="", collapse=",")
+JustinTimberlake_vc <- paste(as.character(PlaylistSongs$id[837:902]), sep="", collapse=",")
+FrankSinatra_vc <- paste(as.character(PlaylistSongs$id[903:952]), sep="", collapse=",")
+CharliePuth_vc <- paste(as.character(PlaylistSongs$id[953:983]), sep="", collapse=",")
+MichaelBuble_vc <- paste(as.character(PlaylistSongs$id[984:1025]), sep="", collapse=",")
+MartinGarrix_vc <- paste(as.character(PlaylistSongs$id[1026:1074]), sep="", collapse=",")
+EnriqueIglesias_vc <- paste(as.character(PlaylistSongs$id[1075:1115]), sep="", collapse=",")
+JohnMayer_vc <- paste(as.character(PlaylistSongs$id[1116:1174]), sep="", collapse=",")
+Future_vc <- paste(as.character(PlaylistSongs$id[1175:1214]), sep="", collapse=",")
+EltonJohn_vc <- paste(as.character(PlaylistSongs$id[1215:1255]), sep="", collapse=",")
+FiftyCent_vc <- paste(as.character(PlaylistSongs$id[1256:1305]), sep="", collapse=",")
+Lorde_vc <- paste(as.character(PlaylistSongs$id[1306:1336]), sep="", collapse=",")
+LilWayne_vc <- paste(as.character(PlaylistSongs$id[1337:1386]), sep="", collapse=",")
+WizKhalifa_vc <- paste(as.character(PlaylistSongs$id[1387:1436]), sep="", collapse=",")
+FifthHarmony_vc <- paste(as.character(PlaylistSongs$id[1437:1469]), sep="", collapse=",")
+LanaDelRay_vc <- paste(as.character(PlaylistSongs$id[1470:1514]), sep="",collapse=",")
+NorahJones_vc <- paste(as.character(PlaylistSongs$id[1515:1552]), sep="", collapse=",")
+Lauv_vc <- paste(as.character(PlaylistSongs$id[1553:1581]), sep="", collapse=",")
+JamesArthur_vc <- paste(as.character(PlaylistSongs$id[1582:1600]), sep="", collapse=",")
+OneRepublic_vc <- paste(as.character(PlaylistSongs$id[1601:1633]), sep="", collapse=",")
+TheScript_vc <- paste(as.character(PlaylistSongs$id[1634:1677]), sep="", collapse=",")
+StevieWonder_vc <- paste(as.character(PlaylistSongs$id[1678:1727]), sep="", collapse=",")
+JasonMraz_vc <- paste(as.character(PlaylistSongs$id[1728:1777]), sep="", collapse=",")
+JohnLegend_vc <- paste(as.character(PlaylistSongs$id[1778:1814]), sep="", collapse=",")
+Pentatonix_vc <- paste(as.character(PlaylistSongs$id[1815:1853]), sep="", collapse=",")
+AliciaKeys_vc <- paste(as.character(PlaylistSongs$id[1854:1903]), sep="", collapse=",")
+Usher_vc <- paste(as.character(PlaylistSongs$id[1904:1953]), sep="", collapse=",")
+SnoopDogg_vc <- paste(as.character(PlaylistSongs$id[1954:2003]), sep="", collapse=",")
+Macklemore_vc <- paste(as.character(PlaylistSongs$id[2004:2026]), sep="",collapse=",")
+ZaraLarsson_vc <- paste(as.character(PlaylistSongs$id[2027:2062]), sep="", collapse=",")
+JayZ_vc <- paste(as.character(PlaylistSongs$id[2063:2112]), sep="", collapse=",")
+```
+
+Next, I apply the *get_features* formula to each vector obtaining the audio features for each musician.
+
+```{r}
+TaylorSwift <- get_features(TaylorSwift_vc)
+ArianaGrande <- get_features(ArianaGrande_vc)
+KendrickLamar <- get_features(KendrickLamar_vc)
+ShawnMendes <- get_features(ShawnMendes_vc)
+Maroon5 <- get_features(Maroon5_vc)
+PostMalone <- get_features(PostMalone_vc)
+Kygo <- get_features(Kygo_vc)
+TheChainsmokers <- get_features(TheChainsmokers_vc)
+Adele <- get_features(Adele_vc)
+Drake <- get_features(Drake_vc)
+JustinBieber <- get_features(JustinBieber_vc)
+Coldplay <- get_features(Coldplay_vc)
+KanyeWest <- get_features(KanyeWest_vc)
+BrunoMars <- get_features(BrunoMars_vc)
+EdSheeran <- get_features(EdSheeran_vc)
+Eminem <- get_features(Eminem_vc)
+Beyonce <- get_features(Beyonce_vc)
+Avicii <- get_features(Avicii_vc)
+Marshmello <- get_features(Marshmello_vc)
+CalvinHarris <- get_features(CalvinHarris_vc)
+JustinTimberlake <- get_features(JustinTimberlake_vc)
+FrankSinatra <- get_features(FrankSinatra_vc)
+CharliePuth <- get_features(CharliePuth_vc)
+MichaelBuble <- get_features(MichaelBuble_vc)
+MartinGarrix <- get_features(MartinGarrix_vc)
+EnriqueIglesias <- get_features(EnriqueIglesias_vc)
+JohnMayer <- get_features(JohnMayer_vc)
+Future <- get_features(Future_vc)
+EltonJohn <- get_features(EltonJohn_vc)
+FiftyCent <- get_features(FiftyCent_vc)
+Lorde <- get_features(Lorde_vc)
+LilWayne <- get_features(LilWayne_vc)
+WizKhalifa <- get_features(WizKhalifa_vc)
+FifthHarmony <- get_features(FifthHarmony_vc)
+LanaDelRay <- get_features(LanaDelRay_vc)
+NorahJones <- get_features(NorahJones_vc)
+Lauv <- get_features(Lauv_vc)
+JamesArthur <- get_features(JamesArthur_vc)
+OneRepublic <- get_features(OneRepublic_vc)
+TheScript <- get_features(TheScript_vc)
+StevieWonder <- get_features(StevieWonder_vc)
+JasonMraz <- get_features(JasonMraz_vc)
+JohnLegend <- get_features(JohnLegend_vc)
+Pentatonix <- get_features(Pentatonix_vc)
+AliciaKeys <- get_features(AliciaKeys_vc)
+Usher <- get_features(Usher_vc)
+SnoopDogg <- get_features(SnoopDogg_vc)
+Macklemore <- get_features(Macklemore_vc)
+ZaraLarsson <- get_features(ZaraLarsson_vc)
+JayZ <- get_features(JayZ_vc)
+```
+
+After that, I merged each musician´s audio features dataframe into a new one, *Features_df*. It contains the audio features for all the tracks in every musician's This Is Playlist.
+
+```{r}
+library(gdata)
+Features_df <- combine(TaylorSwift,ArianaGrande,KendrickLamar,ShawnMendes,Maroon5,PostMalone,Kygo,TheChainsmokers,Adele,Drake,JustinBieber,Coldplay,KanyeWest,BrunoMars,EdSheeran,Eminem,Beyonce,Avicii,Marshmello,CalvinHarris,JustinTimberlake,FrankSinatra,CharliePuth,MichaelBuble,MartinGarrix,EnriqueIglesias,JohnMayer,Future,EltonJohn,FiftyCent,Lorde,LilWayne,WizKhalifa,FifthHarmony,LanaDelRay,NorahJones,Lauv,JamesArthur,OneRepublic,TheScript,StevieWonder,JasonMraz,JohnLegend,Pentatonix,AliciaKeys,Usher,SnoopDogg,Macklemore,ZaraLarsson,JayZ)
+```
+
+A preview of the *Features_df* dataframe can be found below. It only shows 86 rows with the data for Taylor Swift and Ariana Grande. The last column (*Source*) contains the musician.
+
+```{r}
+options(knitr.table.format = "html")
+options(width = 12)
+
+kable(head(Features_df, 86)) %>%
+kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"), font_size = 12) %>%
+scroll_box(width = "720px", height = "500px")
+```
+
+Finally, I have computed the mean of each musician´s audio features using the *aggregate* function. The resulting dataframe contains the audio features for each musician as the mean of the tracks in their respective playlists.
+
+```{r}
+Features_df_aggr <- aggregate(Features_df[, c(1:11,17)], list(Features_df$source), mean)
+names(Features_df_aggr) <- c("Musician", "danceability", "energy", "key", "loudness", "mode", "speechiness", "acousticness", "instrumentalness", "liveness", "valence", "tempo", "duration_ms")
+```
+
+```{r}
+options(knitr.table.format = "html")
+options(width = 12)
+kable(Features_df_aggr) %>%
+kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"), font_size = 12) %>%
+scroll_box(width = "720px", height = "350px")
+```
+
+## Audio Features Description
+
+The description of each feature from the [Spotify Web API Guidance](https://beta.developer.spotify.com/web-api/get-audio-features/) can be found below:
+
+* **Danceability**: Describes how suitable a track is for dancing based on a combination of musical elements including tempo, rhythm stability, beat strength, and overall regularity. A value of 0.0 is least danceable and 1.0 is most danceable.
+
+* **Energy**: Is a measure from 0.0 to 1.0 and represents a perceptual measure of intensity and activity. Typically, energetic tracks feel fast, loud, and noisy. For example, death metal has high energy, while a Bach prelude scores low on the scale. Perceptual features contributing to this attribute include dynamic range, perceived loudness, timbre, onset rate, and general entropy.
+
+* **Key**: The key the track is in. Integers map to pitches using standard Pitch Class notation. E.g. 0 = C, 1 = C♯/D♭, 2 = D, and so on.
+
+* **Loudness**: The overall loudness of a track in decibels (dB). Loudness values are averaged across the entire track and are useful for comparing relative loudness of tracks. Loudness is the quality of a sound that is the primary psychological correlate of physical strength (amplitude). Values typical range between -60 and 0 db.
+
+* **Mode**: Mode indicates the modality (major or minor) of a track, the type of scale from which its melodic content is derived. Major is represented by 1 and minor is 0.
+
+* **Speechiness**: Speechiness detects the presence of spoken words in a track. The more exclusively speech-like the recording (e.g. talk show, audio book, poetry), the closer to 1.0 the attribute value. Values above 0.66 describe tracks that are probably made entirely of spoken words. Values between 0.33 and 0.66 describe tracks that may contain both music and speech, either in sections or layered, including such cases as rap music. Values below 0.33 most likely represent music and other non-speech-like tracks.
+
+* **Acousticness**: A confidence measure from 0.0 to 1.0 of whether the track is acoustic. 1.0 represents high confidence the track is acoustic.
+
+* **Instrumentalness**: Predicts whether a track contains no vocals. “Ooh” and “aah” sounds are treated as instrumental in this context. Rap or spoken word tracks are clearly “vocal”. The closer the instrumentalness value is to 1.0, the greater likelihood the track contains no vocal content. Values above 0.5 are intended to represent instrumental tracks, but confidence is higher as the value approaches 1.0.
+
+* **Liveness**: Detects the presence of an audience in the recording. Higher liveness values represent an increased probability that the track was performed live. A value above 0.8 provides strong likelihood that the track is live.
+
+* **Valence**: A measure from 0.0 to 1.0 describing the musical positiveness conveyed by a track. Tracks with high valence sound more positive (e.g. happy, cheerful, euphoric), while tracks with low valence sound more negative (e.g. sad, depressed, angry).
+
+* **Tempo**: The overall estimated tempo of a track in beats per minute (BPM). In musical terminology, tempo is the speed or pace of a given piece and derives directly from the average beat duration.
+
+* **Duration_ms**: The duration of the track in milliseconds.
+
+# Data Visualization
