@@ -7,9 +7,6 @@ output:
     df_print: paged
     toc: yes
     code_folding: hide
-    fig_caption: yes
-    fig_height: 4.5
-    fig_width: 7
     number_sections: yes
 ---
 
@@ -67,7 +64,11 @@ PlaylistSongs <- data.frame(PlaylistID = character(),
                             artist = character(),
                             artistId = character(),
                             album = character(),
+                            albumId = character(),
                             stringsAsFactors=FALSE) 
+```
+
+```{r}
 # Getting each playlist
 for (i in 1:nrow(playlistURI)) {
   i <- cbind(PlaylistID = as.factor(playlistURI[i,2]),
@@ -79,7 +80,7 @@ for (i in 1:nrow(playlistURI)) {
 }
 ```
 
-As we can see below, the dataframe has 10 columns and 2112 rows.
+As we can see below, the dataframe has 10 columns and 2129 rows.
 
 ```{r}
 dim(PlaylistSongs)
@@ -97,7 +98,7 @@ options(width = 12)
 # Only Taylor Swift and Ariana Grande
 kable(head(PlaylistSongs,86)) %>%
 kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"), font_size = 12) %>%
-scroll_box(width = "720px", height = "500px")
+scroll_box(width = "1000px", height = "750px")
 ```
 
 ## Audio Features
@@ -130,53 +131,53 @@ Using the formula created above, I will be able to extract the audio features fo
 TaylorSwift_vc <- paste(as.character(PlaylistSongs$id[1:38]), sep="", collapse=",")
 ArianaGrande_vc <- paste(as.character(PlaylistSongs$id[39:86]), sep="", collapse=",")
 KendrickLamar_vc <- paste(as.character(PlaylistSongs$id[87:124]), sep="", collapse=",")
-ShawnMendes_vc <- paste(as.character(PlaylistSongs$id[125:167]), sep="", collapse=",")
-Maroon5_vc <- paste(as.character(PlaylistSongs$id[168:216]), sep="", collapse=",")
-PostMalone_vc <- paste(as.character(PlaylistSongs$id[217:251]), sep="", collapse=",")
-Kygo_vc <- paste(as.character(PlaylistSongs$id[252:289]), sep="", collapse=",")
-TheChainsmokers_vc <- paste(as.character(PlaylistSongs$id[290:323]), sep="", collapse=",")
-Adele_vc <- paste(as.character(PlaylistSongs$id[324:348]), sep="", collapse=",")
-Drake_vc <- paste(as.character(PlaylistSongs$id[349:398]), sep="", collapse=",")
-JustinBieber_vc <- paste(as.character(PlaylistSongs$id[399:447]), sep="", collapse=",")
-Coldplay_vc <- paste(as.character(PlaylistSongs$id[448:484]), sep="",collapse=",")
-KanyeWest_vc <- paste(as.character(PlaylistSongs$id[485:535]), sep="", collapse=",")
-BrunoMars_vc <- paste(as.character(PlaylistSongs$id[536:574]), sep="", collapse=",")
-EdSheeran_vc <- paste(as.character(PlaylistSongs$id[575:614]), sep="", collapse=",")
-Eminem_vc <- paste(as.character(PlaylistSongs$id[615:669]), sep="", collapse=",")
-Beyonce_vc <- paste(as.character(PlaylistSongs$id[670:701]), sep="", collapse=",")
-Avicii_vc <- paste(as.character(PlaylistSongs$id[702:760]), sep="", collapse=",")
-Marshmello_vc <- paste(as.character(PlaylistSongs$id[761:798]), sep="", collapse=",")
-CalvinHarris_vc <- paste(as.character(PlaylistSongs$id[799:836]), sep="", collapse=",")
-JustinTimberlake_vc <- paste(as.character(PlaylistSongs$id[837:902]), sep="", collapse=",")
-FrankSinatra_vc <- paste(as.character(PlaylistSongs$id[903:952]), sep="", collapse=",")
-CharliePuth_vc <- paste(as.character(PlaylistSongs$id[953:983]), sep="", collapse=",")
-MichaelBuble_vc <- paste(as.character(PlaylistSongs$id[984:1025]), sep="", collapse=",")
-MartinGarrix_vc <- paste(as.character(PlaylistSongs$id[1026:1074]), sep="", collapse=",")
-EnriqueIglesias_vc <- paste(as.character(PlaylistSongs$id[1075:1115]), sep="", collapse=",")
-JohnMayer_vc <- paste(as.character(PlaylistSongs$id[1116:1174]), sep="", collapse=",")
-Future_vc <- paste(as.character(PlaylistSongs$id[1175:1214]), sep="", collapse=",")
-EltonJohn_vc <- paste(as.character(PlaylistSongs$id[1215:1255]), sep="", collapse=",")
-FiftyCent_vc <- paste(as.character(PlaylistSongs$id[1256:1305]), sep="", collapse=",")
-Lorde_vc <- paste(as.character(PlaylistSongs$id[1306:1336]), sep="", collapse=",")
-LilWayne_vc <- paste(as.character(PlaylistSongs$id[1337:1386]), sep="", collapse=",")
-WizKhalifa_vc <- paste(as.character(PlaylistSongs$id[1387:1436]), sep="", collapse=",")
-FifthHarmony_vc <- paste(as.character(PlaylistSongs$id[1437:1469]), sep="", collapse=",")
-LanaDelRay_vc <- paste(as.character(PlaylistSongs$id[1470:1514]), sep="",collapse=",")
-NorahJones_vc <- paste(as.character(PlaylistSongs$id[1515:1552]), sep="", collapse=",")
-Lauv_vc <- paste(as.character(PlaylistSongs$id[1553:1581]), sep="", collapse=",")
-JamesArthur_vc <- paste(as.character(PlaylistSongs$id[1582:1600]), sep="", collapse=",")
-OneRepublic_vc <- paste(as.character(PlaylistSongs$id[1601:1633]), sep="", collapse=",")
-TheScript_vc <- paste(as.character(PlaylistSongs$id[1634:1677]), sep="", collapse=",")
-StevieWonder_vc <- paste(as.character(PlaylistSongs$id[1678:1727]), sep="", collapse=",")
-JasonMraz_vc <- paste(as.character(PlaylistSongs$id[1728:1777]), sep="", collapse=",")
-JohnLegend_vc <- paste(as.character(PlaylistSongs$id[1778:1814]), sep="", collapse=",")
-Pentatonix_vc <- paste(as.character(PlaylistSongs$id[1815:1853]), sep="", collapse=",")
-AliciaKeys_vc <- paste(as.character(PlaylistSongs$id[1854:1903]), sep="", collapse=",")
-Usher_vc <- paste(as.character(PlaylistSongs$id[1904:1953]), sep="", collapse=",")
-SnoopDogg_vc <- paste(as.character(PlaylistSongs$id[1954:2003]), sep="", collapse=",")
-Macklemore_vc <- paste(as.character(PlaylistSongs$id[2004:2026]), sep="",collapse=",")
-ZaraLarsson_vc <- paste(as.character(PlaylistSongs$id[2027:2062]), sep="", collapse=",")
-JayZ_vc <- paste(as.character(PlaylistSongs$id[2063:2112]), sep="", collapse=",")
+ShawnMendes_vc <- paste(as.character(PlaylistSongs$id[125:177]), sep="", collapse=",")
+Maroon5_vc <- paste(as.character(PlaylistSongs$id[178:226]), sep="", collapse=",")
+PostMalone_vc <- paste(as.character(PlaylistSongs$id[227:261]), sep="", collapse=",")
+Kygo_vc <- paste(as.character(PlaylistSongs$id[262:299]), sep="", collapse=",")
+TheChainsmokers_vc <- paste(as.character(PlaylistSongs$id[300:333]), sep="", collapse=",")
+Adele_vc <- paste(as.character(PlaylistSongs$id[334:358]), sep="", collapse=",")
+Drake_vc <- paste(as.character(PlaylistSongs$id[359:408]), sep="", collapse=",")
+JustinBieber_vc <- paste(as.character(PlaylistSongs$id[409:457]), sep="", collapse=",")
+Coldplay_vc <- paste(as.character(PlaylistSongs$id[458:494]), sep="",collapse=",")
+KanyeWest_vc <- paste(as.character(PlaylistSongs$id[495:545]), sep="", collapse=",")
+BrunoMars_vc <- paste(as.character(PlaylistSongs$id[546:584]), sep="", collapse=",")
+EdSheeran_vc <- paste(as.character(PlaylistSongs$id[585:624]), sep="", collapse=",")
+Eminem_vc <- paste(as.character(PlaylistSongs$id[625:679]), sep="", collapse=",")
+Beyonce_vc <- paste(as.character(PlaylistSongs$id[680:711]), sep="", collapse=",")
+Avicii_vc <- paste(as.character(PlaylistSongs$id[712:770]), sep="", collapse=",")
+Marshmello_vc <- paste(as.character(PlaylistSongs$id[771:808]), sep="", collapse=",")
+CalvinHarris_vc <- paste(as.character(PlaylistSongs$id[809:846]), sep="", collapse=",")
+JustinTimberlake_vc <- paste(as.character(PlaylistSongs$id[847:912]), sep="", collapse=",")
+FrankSinatra_vc <- paste(as.character(PlaylistSongs$id[913:962]), sep="", collapse=",")
+CharliePuth_vc <- paste(as.character(PlaylistSongs$id[963:993]), sep="", collapse=",")
+MichaelBuble_vc <- paste(as.character(PlaylistSongs$id[994:1035]), sep="", collapse=",")
+MartinGarrix_vc <- paste(as.character(PlaylistSongs$id[1036:1084]), sep="", collapse=",")
+EnriqueIglesias_vc <- paste(as.character(PlaylistSongs$id[1085:1125]), sep="", collapse=",")
+JohnMayer_vc <- paste(as.character(PlaylistSongs$id[1126:1184]), sep="", collapse=",")
+Future_vc <- paste(as.character(PlaylistSongs$id[1185:1224]), sep="", collapse=",")
+EltonJohn_vc <- paste(as.character(PlaylistSongs$id[1225:1265]), sep="", collapse=",")
+FiftyCent_vc <- paste(as.character(PlaylistSongs$id[1266:1315]), sep="", collapse=",")
+Lorde_vc <- paste(as.character(PlaylistSongs$id[1316:1346]), sep="", collapse=",")
+LilWayne_vc <- paste(as.character(PlaylistSongs$id[1347:1396]), sep="", collapse=",")
+WizKhalifa_vc <- paste(as.character(PlaylistSongs$id[1397:1446]), sep="", collapse=",")
+FifthHarmony_vc <- paste(as.character(PlaylistSongs$id[1447:1479]), sep="", collapse=",")
+LanaDelRay_vc <- paste(as.character(PlaylistSongs$id[1480:1524]), sep="",collapse=",")
+NorahJones_vc <- paste(as.character(PlaylistSongs$id[1525:1562]), sep="", collapse=",")
+JamesArthur_vc <- paste(as.character(PlaylistSongs$id[1563:1581]), sep="", collapse=",")
+OneRepublic_vc <- paste(as.character(PlaylistSongs$id[1582:1614]), sep="", collapse=",")
+TheScript_vc <- paste(as.character(PlaylistSongs$id[1615:1658]), sep="", collapse=",")
+StevieWonder_vc <- paste(as.character(PlaylistSongs$id[1659:1708]), sep="", collapse=",")
+JasonMraz_vc <- paste(as.character(PlaylistSongs$id[1709:1758]), sep="", collapse=",")
+JohnLegend_vc <- paste(as.character(PlaylistSongs$id[1759:1795]), sep="", collapse=",")
+Pentatonix_vc <- paste(as.character(PlaylistSongs$id[1796:1834]), sep="", collapse=",")
+AliciaKeys_vc <- paste(as.character(PlaylistSongs$id[1835:1884]), sep="", collapse=",")
+Usher_vc <- paste(as.character(PlaylistSongs$id[1885:1934]), sep="", collapse=",")
+SnoopDogg_vc <- paste(as.character(PlaylistSongs$id[1935:1984]), sep="", collapse=",")
+Macklemore_vc <- paste(as.character(PlaylistSongs$id[1985:2007]), sep="",collapse=",")
+ZaraLarsson_vc <- paste(as.character(PlaylistSongs$id[2008:2043]), sep="", collapse=",")
+JayZ_vc <- paste(as.character(PlaylistSongs$id[2044:2093]), sep="", collapse=",")
+Rihanna_vc <- paste(as.character(PlaylistSongs$id[2094:2129]), sep="", collapse=",")
 ```
 
 Next, I apply the *get_features* formula to each vector obtaining the audio features for each musician.
@@ -218,7 +219,6 @@ WizKhalifa <- get_features(WizKhalifa_vc)
 FifthHarmony <- get_features(FifthHarmony_vc)
 LanaDelRay <- get_features(LanaDelRay_vc)
 NorahJones <- get_features(NorahJones_vc)
-Lauv <- get_features(Lauv_vc)
 JamesArthur <- get_features(JamesArthur_vc)
 OneRepublic <- get_features(OneRepublic_vc)
 TheScript <- get_features(TheScript_vc)
@@ -232,39 +232,40 @@ SnoopDogg <- get_features(SnoopDogg_vc)
 Macklemore <- get_features(Macklemore_vc)
 ZaraLarsson <- get_features(ZaraLarsson_vc)
 JayZ <- get_features(JayZ_vc)
+Rihanna <- get_features(Rihanna_vc)
 ```
 
-After that, I merged each musician´s audio features dataframe into a new one, *Features_df*. It contains the audio features for all the tracks in every musician's This Is Playlist.
+After that, I merged each musician´s audio features dataframe into a new one, *all_features*. It contains the audio features for all the tracks in every musician's This Is Playlist.
 
 ```{r}
 library(gdata)
-Features_df <- combine(TaylorSwift,ArianaGrande,KendrickLamar,ShawnMendes,Maroon5,PostMalone,Kygo,TheChainsmokers,Adele,Drake,JustinBieber,Coldplay,KanyeWest,BrunoMars,EdSheeran,Eminem,Beyonce,Avicii,Marshmello,CalvinHarris,JustinTimberlake,FrankSinatra,CharliePuth,MichaelBuble,MartinGarrix,EnriqueIglesias,JohnMayer,Future,EltonJohn,FiftyCent,Lorde,LilWayne,WizKhalifa,FifthHarmony,LanaDelRay,NorahJones,Lauv,JamesArthur,OneRepublic,TheScript,StevieWonder,JasonMraz,JohnLegend,Pentatonix,AliciaKeys,Usher,SnoopDogg,Macklemore,ZaraLarsson,JayZ)
+all_features <- combine(TaylorSwift,ArianaGrande,KendrickLamar,ShawnMendes,Maroon5,PostMalone,Kygo,TheChainsmokers,Adele,Drake,JustinBieber,Coldplay,KanyeWest,BrunoMars,EdSheeran,Eminem,Beyonce,Avicii,Marshmello,CalvinHarris,JustinTimberlake,FrankSinatra,CharliePuth,MichaelBuble,MartinGarrix,EnriqueIglesias,JohnMayer,Future,EltonJohn,FiftyCent,Lorde,LilWayne,WizKhalifa,FifthHarmony,LanaDelRay,NorahJones,JamesArthur,OneRepublic,TheScript,StevieWonder,JasonMraz,JohnLegend,Pentatonix,AliciaKeys,Usher,SnoopDogg,Macklemore,ZaraLarsson,JayZ,Rihanna)
 ```
 
-A preview of the *Features_df* dataframe can be found below. It only shows 86 rows with the data for Taylor Swift and Ariana Grande. The last column (*Source*) contains the musician.
+A preview of the *all_features* dataframe can be found below. It only shows 86 rows with the data for Taylor Swift and Ariana Grande. The last column (*Source*) contains the musician.
 
 ```{r}
 options(knitr.table.format = "html")
 options(width = 12)
 
-kable(head(Features_df, 86)) %>%
+kable(head(all_features, 86)) %>%
 kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"), font_size = 12) %>%
-scroll_box(width = "720px", height = "500px")
+scroll_box(width = "1000px", height = "750px")
 ```
 
 Finally, I have computed the mean of each musician´s audio features using the *aggregate* function. The resulting dataframe contains the audio features for each musician as the mean of the tracks in their respective playlists.
 
 ```{r}
-Features_df_aggr <- aggregate(Features_df[, c(1:11,17)], list(Features_df$source), mean)
-names(Features_df_aggr) <- c("Musician", "danceability", "energy", "key", "loudness", "mode", "speechiness", "acousticness", "instrumentalness", "liveness", "valence", "tempo", "duration_ms")
+mean_features <- aggregate(all_features[, c(1:11,17)], list(all_features$source), mean)
+names(mean_features) <- c("Musician", "danceability", "energy", "key", "loudness", "mode", "speechiness", "acousticness", "instrumentalness", "liveness", "valence", "tempo", "duration_ms")
 ```
 
 ```{r}
 options(knitr.table.format = "html")
 options(width = 12)
-kable(Features_df_aggr) %>%
+kable(mean_features) %>%
 kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"), font_size = 12) %>%
-scroll_box(width = "720px", height = "350px")
+scroll_box(width = "1000px", height = "500px")
 ```
 
 ## Audio Features Description
@@ -296,3 +297,143 @@ The description of each feature from the [Spotify Web API Guidance](https://beta
 * **Duration_ms**: The duration of the track in milliseconds.
 
 # Data Visualization
+
+## Radar Chart
+
+A radar chart is useful to compare the musical vibes of these musicians in a more visual way. The first visualisation is an R implementation of the radar chart from the [chart.js](http://www.chartjs.org/) javascript library and evaluates the audio features for 10 selected musicians.
+
+First, I normalised the values to be from 0 to 1. This will help to make the chart more clear and readable.
+
+```{r}
+mean_features_norm <- cbind(mean_features[1], 
+                                     apply(mean_features[-1],2,
+                                           function(x){(x-min(x)) / diff(range(x))}))
+```
+
+Next, an interactive radar chart can be plotted. It displays data set labels when hovering over each radial line, showing the value for the selected feature.
+
+```{r}
+library(radarchart)
+library(tidyr)
+sample1 <- mean_features[mean_features$Musician %in% c("TaylorSwift", "ArianaGrande", "KendrickLamar", "ShawnMendes", "Maroon5", "PostMalone", "Kygo", "TheChainsmokers", "Adele", "Drake"),]
+
+mean_features_norm_1 <- cbind(sample1[1], 
+                                        apply(sample1[-1],2,
+                                              function(x){(x-min(x)) / diff(range(x))})) 
+
+radarDF_1 <- gather(mean_features_norm_1, key=Attribute, value=Score, -Musician) %>%
+  spread(key=Musician, value=Score)
+
+chartJSRadar(scores = radarDF_1,
+             scaleStartValue = -1, 
+             maxScale =1, 
+             showToolTipLabel = TRUE)
+```
+
+```{r}
+sample2 <- mean_features[mean_features$Musician %in% c("JustinBieber", "Coldplay", "KanyeWest", "BrunoMars", "EdSheeran", "Eminem", "Beyonce", "Avicii", "Marshmello", "CalvinHarris"),]
+
+mean_features_norm_2 <- cbind(sample2[1], apply(sample2[-1],2,function(x){(x-min(x)) / diff(range(x))})) 
+
+radarDF_2 <- gather(mean_features_norm_2, key=Attribute, value=Score, -Musician) %>%
+  spread(key=Musician, value=Score)
+
+chartJSRadar(scores = radarDF_2, scaleStartValue = -1, maxScale = 1, showToolTipLabel = TRUE)
+```
+
+```{r}
+sample3 <- mean_features[mean_features$Musician %in% c("JustinTimberlake", "FrankSinatra", "CharliePuth", "MichaelBuble", "MartinGarrix", "EnriqueIglesias", "JohnMayer", "Future", "EltonJohn", "FiftyCent"),]
+
+mean_features_norm_3 <- cbind(sample3[1], apply(sample3[-1],2,function(x){(x-min(x)) / diff(range(x))})) 
+
+radarDF_3 <- gather(mean_features_norm_3, key=Attribute, value=Score, -Musician) %>%
+  spread(key=Musician, value=Score)
+
+chartJSRadar(scores = radarDF_3, scaleStartValue = -1, maxScale = 1, showToolTipLabel = TRUE)
+```
+
+```{r}
+sample4 <- mean_features[mean_features$Musician %in% c("Lorde", "LilWayne", "WizKhalifa", "FifthHarmony", "LanaDelRay", "NorahJones", "JamesArthur", "OneRepublic", "TheScript", "StevieWonder"),]
+
+mean_features_norm_4 <- cbind(sample4[1], apply(sample4[-1],2,function(x){(x-min(x)) / diff(range(x))})) 
+
+radarDF_4 <- gather(mean_features_norm_4, key=Attribute, value=Score, -Musician) %>%
+  spread(key=Musician, value=Score)
+
+chartJSRadar(scores = radarDF_4, scaleStartValue = -1, maxScale = 1, showToolTipLabel = TRUE)
+```
+
+```{r}
+sample5 <- mean_features[mean_features$Musician %in% c("JasonMraz", "JohnLegend", "Pentatonix", "AliciaKeys", "Usher", "SnoopDogg", "Macklemore", "ZaraLarsson", "JayZ", "Rihanna"),]
+
+mean_features_norm_5 <- cbind(sample5[1], apply(sample5[-1],2,function(x){(x-min(x)) / diff(range(x))})) 
+
+radarDF_5 <- gather(mean_features_norm_5, key=Attribute, value=Score, -Musician) %>%
+  spread(key=Musician, value=Score)
+
+chartJSRadar(scores = radarDF_5, scaleStartValue = -1, maxScale = 1, showToolTipLabel = TRUE)
+```
+
+## Cluster Analysis
+
+Another way to find out the differences between these musicians in their musical repertoire is grouping them in clusters. The general idea of a clustering algorithm is to divide a given dataset into multiple groups on the basis of similarity in the data. In this case, musicians will be grouped in different clusters according to their music preferences.
+
+Prior to clustering data, it is important to rescale the numeric variables of the dataset. After that, I kept the musicians as the row names to be able to show them as labels in the plot.
+
+```{r}
+scaled.features <- scale(mean_features[-1])
+rownames(scaled.features) <- mean_features$Musician
+```
+
+I applied the K-Means clustering method, which is one of the most popular techniques of unsupervised statistical learning methods. It is an unsupervised method because is performed on a set of variables X1, X2, Xp with no associated response Y, so there is no outcome to be predicted. It aims to partition n observations into k cluster in which each observation belongs to the cluster with the nearest mean.
+
+Now that I apply the the K-Means algorithm for each musician, I can plot a two-dimensional view of the data. The x-axis and y-axis correspond to the first and second component, and the eigenvectors (represented by red arrows) indicate the directional influence each variable has on the principal components. Let´s have a look at the clusters that result from applying the K-Means algorithm to my dataset.
+
+```{r}
+library(ggfortify)
+library(ggthemes)
+set.seed(5000)
+
+k_means <- kmeans(scaled.features, 5)
+
+kmeans_plot <- autoplot(k_means, 
+              main = "K-means clustering", 
+              data = scaled.features,
+              loadings = TRUE, 
+              loadings.colour = "#CC0000",
+              loadings.label.colour = "#CC0000", 
+              loadings.label = TRUE, 
+              loadings.label.size = 2.5,  
+              loadings.label.repel=T,
+              label.size = 2.5, 
+              label.repel = T) + 
+  scale_fill_manual(values = c("#000066", "#9999CC", "#66CC99", "#FB7201", "#21CDFF")) + 
+  scale_color_manual(values = c("#000066", "#9999CC", "#66CC99", "#FB7201", "#21CDFF")) + 
+  theme(plot.title=element_text(size=18, face="bold"))
+
+kmeans_plot
+```
+
+I have also plotted another radar chart containing the features for each cluster. It is useful to compare the attributes of the songs that each cluster listen to.
+
+```{r}
+library(radarchart)
+library(tidyr)
+cluster_centers <- as.data.frame(k_means$centers)
+cluster <- c("Cluster 1", "Cluster 2", "Cluster 3", "Cluster 4", "Cluster 5")
+cluster_centers <- cbind(cluster, cluster_centers)
+```
+
+```{r}
+radarDF_6 <- gather(cluster_centers, key=Attribute, value=Score, -cluster) %>%
+  spread(key=cluster, value=Score)
+# we change the colours according to clusters
+colMatrix = matrix(c(c(4,24,102), c(135,133,193), c(87,196,135), c(251,114,1), c(33,205,255)), nrow = 3)
+# chart
+chartJSRadar(scores = radarDF_6,
+             scaleStartValue = -4, 
+             maxScale =1.5, 
+             showToolTipLabel = TRUE,
+             colMatrix = colMatrix)
+```
+
