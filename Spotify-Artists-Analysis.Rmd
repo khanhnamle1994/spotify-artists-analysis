@@ -488,17 +488,17 @@ chartJSRadar(scores = radarDF_6,
              colMatrix = colMatrix)
 ```
 
-* Cluster 1: Coldplay, Avicii, Marshmello, Martin Garrix.
+* *Cluster 1* includes 4 artists: Coldplay, Avicii, Marshmello, and Martin Garrix. Their music are mostly performed live and instrumental, usually loud and full of energy with high tempo. Not too surpirsed as 3 of the 4 artists perform EDM / House music, and Coldplay is known for their live concerts.
 
-* Cluster 2: Frank Sinatra, Norah Jones.
+* *Cluster 2* incldues 2 artists: Frank Sinatra and Norah Jones (any Jazz fans out there?). Their music score high on acousticness and the Major scale mode. However, they score low in all the remaining attributes. Typical Jazz tunes.
 
-* Cluster 3: Post Malone, Kygo, The Chainsmokers, Adele, Lorde, Lana Del Rey, James Arthur, One Republic, John Legend, Alicia Keys.
+* *Cluster 3* includes 10 artists: Post Malone, Kygo, The Chainsmokers, Adele, Lorde, Lana Del Rey, James Arthur, One Republic, John Legend, and Alicia Keys. This cluster scores average in mostly all the attributes. This suggests that this group of artists is well-balanced and versatile with style & creation, hence the diversity of genres presented in this cluster (EDM, Pop, R&B).
 
-* Cluster 4: Ariana Grande, Maroon 5, Drake, Justin Bieber, Bruno Mars, Calvin Harris, Charlie Puth, Enrique Iglesias, Future, Wiz Khalifa, Fifth Harmony, Usher, Macklemore, Zara Larsson, Rihanna.
+* *Cluster 4* includes 15 artists: Ariana Grande, Maroon 5, Drake, Justin Bieber, Bruno Mars, Calvin Harris, Charlie Puth, Enrique Iglesias, Future, Wiz Khalifa, Fifth Harmony, Usher, Macklemore, Zara Larsson, and Rihanna. Their music are danceable, loud, high-tempo, and energetic. This group has the presence of many young mainstream artists in the Pop and Hip-Hop genres.
 
-* Cluster 5: Taylor Swift, Shawn Mendes, Ed Sheeran, Michael Buble, John Mayer, Elton John, The Script, Stevie Wonder, Jason Mraz, Pentatonix
+* *Cluster 5* includes 10 artists: Taylor Swift, Shawn Mendes, Ed Sheeran, Michael Buble, John Mayer, Elton John, The Script, Stevie Wonder, Jason Mraz, and Pentatonix. This is my favorite group! Taylor Swift? Ed Sheeran? John Mayer? Jason Mraz? Elton John? I guess I listen to a lot of singer-songwriter artists. Their music are mostly in the Major scale, while achieve perfect balance (average score) in all other attributes.
 
-* Cluster 6: Kendrick Lamar, Kanye West, Eminem, Beyonce, Justin Timberlake, 50 Cent, Lil Wayne, Snoop Dogg, Jay-Z.
+* *Cluster 6* includes 9 artists: Kendrick Lamar, Kanye West, Eminem, Beyonce, Justin Timberlake, 50 Cent, Lil Wayne, Snoop Dogg, and Jay-Z. You already see the trend here: 7 of them are Rappers, and even Beyonce and JT regularly collaborate with rappers. Their songs have high number of spoken words and speech-like sections, are long in duration and performed live often. Any better description of rap music?
 
 ## Analysis by Feature
 
@@ -543,6 +543,8 @@ danceability_plot <- ggplot(danceability_subset,
 danceability_plot
 ```
 
+If you want to bust the moves and impresse your crush, try listen to more of Future, Drake, Wiz Khalifa, Snoop Doog, and Eminem. On the other hand, don't even attempt to dance to Frank Sinatra or Lana Del Rey's tunes.
+
 ### Energy
 
 ```{r}
@@ -567,6 +569,8 @@ energy_plot <- ggplot(energy_subset,
 
 energy_plot
 ```
+
+You're a fairly energetic person if you listen to lots of Marhsmello, Calvin Harris, Enrique Iglesias, Martin Garrix, Eminem, Jay-Z. The opposite is true if you're a fan of Frank Sinatra and Norah Jones.
 
 ### Loudness
 
@@ -593,6 +597,8 @@ loudness_plot <- ggplot(loudness_subset,
 loudness_plot
 ```
 
+The Loudness ranking is almost exactly similar to the Energy one.
+
 ### Speechiness
 
 ```{r}
@@ -617,6 +623,8 @@ speechiness_plot <- ggplot(speechiness_subset,
 
 speechiness_plot
 ```
+
+All the Rap fans out there: what's your favorite songs from Kendrick Lamar? or 50 Cents? or Jay-Z? Hmm, I'm surprised Eminem does not rank higher, as I personally he's the GOAT of all rappers.
 
 ### Acousticness
 
@@ -643,6 +651,8 @@ acousticness_plot <- ggplot(acousticness_subset,
 acousticness_plot
 ```
 
+Acousticness is exactly opposite of Loudness and Energy. Mr. Sinatra and Mrs. Jones released some powerful acoustic tracks throughout their careers.
+
 ### Instrumentalness
 
 ```{r}
@@ -667,6 +677,8 @@ instrumentalness_plot <- ggplot(instrumentalness_subset,
 
 instrumentalness_plot
 ```
+
+EDM to the win! Martin Garrix, Avicii, and Marshmello produce tracks that contain almost no vocals.
 
 ### Liveness
 
@@ -693,6 +705,8 @@ liveness_plot <- ggplot(liveness_subset,
 liveness_plot
 ```
 
+So who are the 5 artists who performed the most live audio recordings? Jason Mraz, Coldplay, Martin Garrix, Kanye West, and Kendrick Lamar, in that order.
+
 ### Valence
 
 ```{r}
@@ -717,6 +731,8 @@ valence_plot <- ggplot(valence_subset,
 
 valence_plot
 ```
+
+Valence is the feature that describes musical positiveness conveyed by a track. Music by Bruno Mars, Stevie Wonder, and Enrique Iglesias are very positive, while music by Lana Del Rey, Coldplay, and Martin Garrix sound quite negative.
 
 ### Tempo
 
@@ -743,6 +759,8 @@ tempo_plot <- ggplot(tempo_subset,
 tempo_plot
 ```
 
+Future, Marshmello, and Wiz Khalifa are kings of speed. They produce tracks with highest tempo in beats per minute. And Snoop Dogg, lol? He tends to take some time to utter his magic words.
+
 ### Duration
 
 ```{r}
@@ -767,3 +785,5 @@ duration_plot <- ggplot(duration_subset,
 
 duration_plot
 ```
+
+Last but not least, songs by Justin Timberlake, followed by Elton John and Eminem, are, sometimes excruciatingly, long. In contrast, Frank Sinatra, Zara Larsson, and Pentatonix favor short and quick music.
