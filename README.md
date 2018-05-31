@@ -10,10 +10,10 @@ For the study, I will access the [Spotify Web API](https://beta.developer.spotif
 
 Here are the different files in the project:
 
-* Dataset: The initial csv file I collected to prepare data for this project.
-* Spotify Artists Analysis: The complete R Markdown that details my whole process throughout this project.
-* Data Processing: The R code I did for getting the data.
-* Data Visualization: The R code I did for visualizing the data.
+* [This Is Playlist URI](https://github.com/khanhnamle1994/spotify-artists-analysis/blob/master/this-is-playlist-URI.csv): The initial .csv file with artists and playlist URI I prepared for this project.
+* [Spotify Artists Analysis](https://github.com/khanhnamle1994/spotify-artists-analysis/blob/master/Spotify-Artists-Analysis.Rmd): The complete R Markdown that details my whole process throughout this project.
+* [Data Processing](https://github.com/khanhnamle1994/spotify-artists-analysis/blob/master/Data-Processing.R): The R code I did for getting the data.
+* [Data Visualization](https://github.com/khanhnamle1994/spotify-artists-analysis/blob/master/Data-Visualization.R): The R code I did for visualizing the data.
 
 ## Requirements
 
