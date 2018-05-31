@@ -1,7 +1,43 @@
-In this project, I attempt to answer the questions **"What makes a song popular on Spotify?"**.
+# Spotify Artists Analysis
 
-I work with the [Top Spotify Tracks of 2017](https://www.kaggle.com/nadintamer/top-tracks-of-2017) dataset downloaded from Kaggle. It is loaded in *Spotify-Audio-Features.csv* file.
+The purpose of this project is to analyze how different or how similar is the music that different artists on Spotify produce. The focus will be placed on disentangling the musical taste of 50 different artists from a wide range of genres. Throughout the process, I also identify different clusters of artists that share a similar musical style.
 
-The dataset contains the audio features for Spotify's 100 top tracks of 2017. The audio features for each song were extracted using the Spotify Web API and the `spotipy` Python library. Credit goes to Spotify for calculating the audio feature values.
+For the study, I will access the [Spotify Web API](https://beta.developer.spotify.com/web-api/), which provides data from the Spotify music catalog and can be accesed via standard HTTPS requests to an API endpoint. The Spotify API provides, among other things, track information for each song, including audio statistics such as *danceability*, *instrumentalness* or *temp*. I will focus on retrieving this audio feature information from 50 different 'This Is' Playlists of 50 different artists . Each feature measures an aspect of a song. Detailed information on how each feature is calculated can be found in the Spotify API Website.
 
 ![spotify-image](spotify-image.jpg)
+
+## Documents
+
+Here are the different files in the project:
+
+* Dataset: The initial csv file I collected to prepare data for this project.
+* Spotify Artists Analysis: The complete R Markdown that details my whole process throughout this project.
+* Data Processing: The R code I did for getting the data.
+* Data Visualization: The R code I did for visualizing the data.
+
+## Requirements
+
+* [RStudio](https://www.rstudio.com/) (get the latest version)
+
+## Libraries
+
+Here are the R packages I used for the project:
+
+* [Rspotify](https://github.com/tiagomendesdantas/Rspotify)
+* [httr](https://cran.r-project.org/web/packages/httr/index.html)
+* [jsonlite](https://cran.r-project.org/web/packages/jsonlite/index.html)
+* [readr](https://cran.r-project.org/web/packages/readr/index.html)
+* [knitr](https://cran.r-project.org/web/packages/knitr/index.html)
+* [kableExtra](https://cran.r-project.org/web/packages/kableExtra/index.html)
+* [dplyr](https://cran.r-project.org/web/packages/dplyr/index.html)
+* [gdata](https://cran.r-project.org/web/packages/gdata/index.html)
+* [radarchart](https://cran.r-project.org/web/packages/radarchart/index.html)
+* [tidyr](https://cran.r-project.org/web/packages/tidyr/index.html)
+* [ggfortify](https://cran.r-project.org/web/packages/ggfortify/index.html)
+* [ggthemes](https://cran.r-project.org/web/packages/ggthemes/index.html)
+* [stringr](https://cran.r-project.org/web/packages/stringr/index.html)
+* [ggplot2](https://cran.r-project.org/web/packages/ggplot2/index.html)
+
+## License
+
+MIT. See the LICENSE file for the copyright notice.
