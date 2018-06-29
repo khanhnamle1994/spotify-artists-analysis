@@ -4,6 +4,8 @@ The purpose of this project is to analyze how different or how similar is the mu
 
 For the study, I will access the [Spotify Web API](https://beta.developer.spotify.com/web-api/), which provides data from the Spotify music catalog and can be accesed via standard HTTPS requests to an API endpoint. The Spotify API provides, among other things, track information for each song, including audio statistics such as *danceability*, *instrumentalness* or *temp*. I will focus on retrieving this audio feature information from 50 different 'This Is' Playlists of 50 different artists . Each feature measures an aspect of a song. Detailed information on how each feature is calculated can be found in the Spotify API Website.
 
+An accompanied Medium blog post has been written up and can be viewed here: [Spotify's "This Is" Playlists: The Ultimate Song Analysis for 50 Mainstream Artists](https://medium.freecodecamp.org/spotifys-this-is-playlists-the-ultimate-song-analysis-for-50-mainstream-artists-491882081819)
+
 ![spotify-image](spotify-image.jpg)
 
 ## Documents
